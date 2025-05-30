@@ -1,5 +1,7 @@
-# evaluate.py
-# Evaluates t-shirt fit for each garment using the refined `score_fit` model.
+"""
+evaluate.py
+Evaluates t-shirt fit for each garment using the refined `score_fit` model.
+"""
 
 import os
 import logging
@@ -67,6 +69,7 @@ def main():
 
     # Load body measurements (returns dict) and shirt data (returns DataFrame)
     results = evaluate_fit(body_path, shirt_path, out_path)
+    df = pd.DataFrame(results)
 
     # Print a brief summary (prettified)
     display_cols = [

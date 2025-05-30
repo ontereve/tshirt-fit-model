@@ -32,7 +32,7 @@ def load_body_measurements(path: str) -> Dict[str, float]:
             # Single-row key-value mapping
             body = df.iloc[0].astype(float).to_dict()
         return body
-    except Exception as e:
+    except (ValueError, KeyError, FileNotFoundError) as e:
         logger.error(f"Failed to load body measurements from '{path}': {e}")
         return {}
 
