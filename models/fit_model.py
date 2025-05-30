@@ -70,19 +70,19 @@ def score_chest(body_chest, shirt_chest):
                 "Too Tight",
                 f'Chest: {chest_diff:+.1f}" vs body (tight).',
             )
-        elif chest_diff < 0:
+        if chest_diff < 0:
             return (
                 max(0, 100 + chest_diff * CHEST_SLIM_PENALTY),
                 "Slim Fit",
                 f'Chest: {chest_diff:+.1f}" vs body (slim).',
             )
-        elif chest_diff < 0.5:
+        if chest_diff < 0.5:
             return 100, None, f'Chest: {chest_diff:+.1f}" vs body (close fit).'
-        elif chest_diff < CHEST_RELAXED_MAX:
+        if chest_diff < CHEST_RELAXED_MAX:
             return 100, "Relaxed Fit", f'Chest: {chest_diff:+.1f}" vs body (relaxed).'
-        elif chest_diff < CHEST_OVERSIZED_MAX:
+        if chest_diff < CHEST_OVERSIZED_MAX:
             return 95, "Oversized", f'Chest: {chest_diff:+.1f}" vs body (oversized).'
-        elif chest_diff < CHEST_COMICALLY_OVERSIZED_MAX:
+        if chest_diff < CHEST_COMICALLY_OVERSIZED_MAX:
             return (
                 85 - (chest_diff - CHEST_OVERSIZED_MAX) * CHEST_VERY_OVERSIZED_PENALTY,
                 "Very Oversized",
@@ -107,9 +107,9 @@ def score_shoulder(body_shoulder, shirt_shoulder):
                 "Shoulders Too Narrow",
                 f'Shoulder: {diff:+.1f}" vs body (too narrow).',
             )
-        elif diff < 0.5:
+        if diff < 0.5:
             return 100, None, f'Shoulder: {diff:+.1f}" vs body (fitted).'
-        elif diff < SHOULDER_DROP_MAX:
+        if diff < SHOULDER_DROP_MAX:
             return 100, "Drop-Shoulder", f'Shoulder: {diff:+.1f}" vs body (drop-shoulder).'
         else:
             return (
@@ -126,11 +126,11 @@ def score_length(body_length, shirt_length, shirt_chest):
         diff = shirt_length - body_length
         if diff < LENGTH_CROPPED_MIN:
             return 50, "Cropped", f'Length: {diff:+.1f}" vs body (cropped).'
-        elif diff < LENGTH_SHORT_MAX:
+        if diff < LENGTH_SHORT_MAX:
             return 70, "Short Length", f'Length: {diff:+.1f}" vs body (short).'
-        elif diff < LENGTH_IDEAL_MAX:
+        if diff < LENGTH_IDEAL_MAX:
             return 100, None, f'Length: {diff:+.1f}" vs body (ideal).'
-        elif diff < LENGTH_LONG_MAX:
+        if diff < LENGTH_LONG_MAX:
             return 90, None, f'Length: {diff:+.1f}" vs body (long).'
         else:
             return (
@@ -165,7 +165,7 @@ def score_hem(body_hem, shirt_hem, shirt_chest):
                     "Tight Waist",
                     f"Hem: {('+' if diff >= 0 else '')}{diff:.1f}\" vs body.",
                 )
-            elif diff < HEM_FLARED_MIN:
+            if diff < HEM_FLARED_MIN:
                 return 100, None, f"Hem: {('+' if diff >= 0 else '')}{diff:.1f}\" vs body."
             else:
                 return 90, "Flared Hem", f"Hem: {('+' if diff >= 0 else '')}{diff:.1f}\" vs body."
@@ -177,7 +177,7 @@ def score_hem(body_hem, shirt_hem, shirt_chest):
                     "Tapered Waist",
                     f"Hem: {('+' if diff >= 0 else '')}{diff:.1f}\" vs chest.",
                 )
-            elif diff < HEM_BOX_CUT_MAX:
+            if diff < HEM_BOX_CUT_MAX:
                 return 100, None, f"Hem: {('+' if diff >= 0 else '')}{diff:.1f}\" vs chest."
             else:
                 return 90, "Boxy Cut", f"Hem: {('+' if diff >= 0 else '')}{diff:.1f}\" vs chest."
@@ -195,13 +195,13 @@ def score_sleeve(body_sleeve, shirt_sleeve, shirt_chest):
                     "Cap Sleeve",
                     f"Sleeve: {('+' if diff >= 0 else '')}{diff:.1f}\" vs body arm.",
                 )
-            elif diff < SLEEVE_SHORT_MAX:
+            if diff < SLEEVE_SHORT_MAX:
                 return (
                     SLEEVE_SHORT_SCORE,
                     "Short Sleeves",
                     f"Sleeve: {('+' if diff >= 0 else '')}{diff:.1f}\" vs body arm.",
                 )
-            elif diff < SLEEVE_IDEAL_MAX:
+            if diff < SLEEVE_IDEAL_MAX:
                 return (
                     SLEEVE_IDEAL_SCORE,
                     None,
@@ -221,7 +221,7 @@ def score_sleeve(body_sleeve, shirt_sleeve, shirt_chest):
                     "Short Sleeves",
                     f"Sleeve: Sleeve-to-chest ratio {ratio:.2f}.",
                 )
-            elif ratio > 0.5:
+            if ratio > 0.5:
                 return (
                     SLEEVE_ELBOW_SCORE,
                     "Elbow-Length Sleeves",

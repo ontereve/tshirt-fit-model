@@ -1,5 +1,6 @@
+# tests/test_fit_model.py
+
 import os
-import pytest
 from utils.data_loader import load_body_measurements, load_shirt_data
 from models.fit_model import score_fit, bulk_projection_profile
 

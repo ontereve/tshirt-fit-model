@@ -1,7 +1,8 @@
+# tests/test_evaluate.py
+
 import os
 import pandas as pd
 from utils.data_loader import load_body_measurements, load_shirt_data
-from models.fit_model import score_fit, bulk_projection_profile
 from evaluate import score_shirts, evaluate_fit
 
 # Paths to test data (relative to this test file)

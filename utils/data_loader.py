@@ -4,9 +4,9 @@ Utility functions for loading body measurements and shirt data from CSV files.
 Handles flexible formats, robust column cleaning, and automatic weight field detection.
 """
 
-import pandas as pd
 import logging
-from typing import Dict, Any
+from typing import Dict
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 

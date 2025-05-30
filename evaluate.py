@@ -2,12 +2,11 @@
 # Evaluates t-shirt fit for each garment using the refined `score_fit` model.
 
 import os
+import logging
 import pandas as pd
 from tabulate import tabulate
 from utils.data_loader import load_body_measurements, load_shirt_data
 from models.fit_model import score_fit, bulk_projection_profile
-
-import logging
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
@@ -54,13 +53,13 @@ def evaluate_fit(body_path, shirt_path, out_path):
 def main():
     # Show full strings in pandas output (no truncation)
     pd.set_option("display.max_colwidth", None)
-    BODY_PATH = "data/body_measurements.csv"
-    SHIRT_PATH = "data/shirt_data.csv"
+    body_path = "data/body_measurements.csv"
+    shirt_path = "data/shirt_data.csv"
 
-    OUT_PATH = "outputs/fit_results.csv"
+    out_path = "outputs/fit_results.csv"
 
     # Verify input files exist
-    if not os.path.exists(BODY_PATH) or not os.path.exists(SHIRT_PATH):
+    if not os.path.exists(body_path) or not os.path.exists(shirt_path):
         print(
             "Missing input data. Please check data/body_measurements.csv and data/shirt_data.csv."
         )
