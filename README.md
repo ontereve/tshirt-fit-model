@@ -1,10 +1,10 @@
-# T-Shirt Fit Model (Modular, Extensible, Data-Driven)
+# T-Shirt Fit Model
 
-This project scores t-shirt fits for a given body profile, using your real measurements and a set of tunable, fashion-informed rules. It's **modular**, **configurable**, and ready to scale as you add more garments or new fit criteria.
+This project scores t-shirt fits for a given user profile, using real measurements and a set of tunable, fashion-informed rules.
 
 ## Features
 
-- Flexible scoring for multiple fit "aspects" (chest, shoulder, length, hem, sleeve, weight, etc).
+- Flexible scoring for multiple measured fit aspects (chest, shoulder, length, hem, sleeve, weight, etc).
 - All model logic and tuning centralized in `models/`.
 - Clean data IO helpers in `utils/`.
 - CLI-friendly script for easy running and CSV output.
@@ -15,9 +15,10 @@ This project scores t-shirt fits for a given body profile, using your real measu
 
 ## Directory Structure
 
-tshirt_fit/
-├── data/
-│ ├── body_measurements.csv # Your body measurements
+```
+tshirt_fit/  
+├── data/  
+│ ├── body_measurements.csv # User's body measurements
 │ └── shirt_data.csv # All shirt measurements (one row per shirt)
 ├── models/
 │ ├── fit_model.py # Fit scoring and projection logic
@@ -31,7 +32,7 @@ tshirt_fit/
 ├── tests/
 │ └── ... # Unit tests and sample data
 └── README.md # This file
-
+```
 ---
 
 ## Data File Format
@@ -65,9 +66,9 @@ tshirt_fit/
 
 ## Model Overview
 
-- **Fit Score** (0–100) and Confidence are calculated using all available aspects (chest, shoulder, length, hem, sleeve, weight).
+- **Fit Score** (0–100) and Confidence are calculated using all available aspects.
 - All scoring rules and tunable weights are in `models/model_params.py`.
-- You can add or remove aspects by editing the `ASPECTS` and `ASPECT_SCORERS` dictionaries.
+- You can add or remove aspects by editing the `ASPECTS` dictionary.
 
 ---
 
@@ -94,9 +95,8 @@ tshirt_fit/
    ```
 
 5. **View results**
-- Results print to the console (pretty table)
+- Formatted results are printed to the console.  
 - Full details saved to `outputs/fit_results.csv`
-- Results are also printed in a clear table in the terminal.
 
 ---
 
@@ -105,7 +105,7 @@ tshirt_fit/
 The output CSV includes, for each shirt:
 
 - **FitScore**, **Confidence**, **Tags**, **Rationale**  
-- **BulkFitScore**, **BulkConfidence**, **BulkTags**, **BulkRationale** (for projected/“bulked-up” profile)
+- **BulkFitScore**, **BulkConfidence**, **BulkTags**, **BulkRationale** (for projected/post-bulk profile)
 
 **Example output:**
 
@@ -124,9 +124,6 @@ Test Tee Regular,95,83,"Relaxed Fit","Chest: +0.5\" vs body (relaxed).",90,70,"R
 
 - **Change weights or thresholds:**  
   Tune the constants in `model_params.py`.
-
-- **Plug in new garment types:**  
-  Add new columns to your CSV and logic to your model as needed.
 
 - **Test everything:**  
   Unit tests live in `tests/` and sample data is provided for reproducibility.
@@ -150,7 +147,7 @@ Test Tee Regular,95,83,"Relaxed Fit","Chest: +0.5\" vs body (relaxed).",90,70,"R
 ## Troubleshooting
 
 - **Module not found?**  
-  Make sure your folder structure is correct and you’re running the script from your project root (where `main.py` lives).
+  Make sure your folder structure is correct and you’re running the script from your project root (where `evaluate.py` lives).
 
 - **Data not showing up?**  
   Check that your CSV column headers match exactly, and that your data is correctly filled in.
@@ -166,9 +163,5 @@ Test Tee Regular,95,83,"Relaxed Fit","Chest: +0.5\" vs body (relaxed).",90,70,"R
 ## Code Quality
 
 - This project is regularly checked with mypy (for types) and pylint (for linting).
-
 - All IO is handled in utils/ and the CLI script.
-
 - All fit logic is centralized and modular, making it easy to extend or change.
-  
----

@@ -10,6 +10,7 @@ from typing import Dict, Any
 
 logger = logging.getLogger(__name__)
 
+
 def load_body_measurements(path: str) -> Dict[str, float]:
     """
     Loads body measurements from a CSV file.
@@ -25,7 +26,7 @@ def load_body_measurements(path: str) -> Dict[str, float]:
             return {}
         df.columns = [col.strip() for col in df.columns]
 
-        if 'Measurement' in df.columns and 'Value' in df.columns:
+        if "Measurement" in df.columns and "Value" in df.columns:
             body = pd.Series(df.Value.values, index=df.Measurement).astype(float).to_dict()
         else:
             # Single-row key-value mapping
@@ -34,6 +35,7 @@ def load_body_measurements(path: str) -> Dict[str, float]:
     except Exception as e:
         logger.error(f"Failed to load body measurements from '{path}': {e}")
         return {}
+
 
 def load_shirt_data(path: str) -> pd.DataFrame:
     """
@@ -51,17 +53,17 @@ def load_shirt_data(path: str) -> pd.DataFrame:
 
         # Normalize 'Weight' column (auto-detect various possible names)
         weight_col = None
-        for candidate in ['Weight', 'WeightOz', 'weight', 'weightoz']:
+        for candidate in ["Weight", "WeightOz", "weight", "weightoz"]:
             if candidate in df.columns:
                 weight_col = candidate
                 break
-        if weight_col and weight_col != 'Weight':
-            df['Weight'] = df[weight_col].astype(float)
-        elif 'Weight' in df.columns:
-            df['Weight'] = df['Weight'].astype(float)
+        if weight_col and weight_col != "Weight":
+            df["Weight"] = df[weight_col].astype(float)
+        elif "Weight" in df.columns:
+            df["Weight"] = df["Weight"].astype(float)
         else:
             # No weight column, add as NaN for consistency
-            df['Weight'] = float('nan')
+            df["Weight"] = float("nan")
 
         return df
     except Exception as e:

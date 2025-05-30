@@ -8,28 +8,26 @@ from evaluate import score_shirts, evaluate_fit
 BODY_PATH = os.path.join(os.path.dirname(__file__), "sample_body.csv")
 SHIRT_PATH = os.path.join(os.path.dirname(__file__), "sample_shirts.csv")
 
+
 def test_score_shirts_with_sample_data():
     body = load_body_measurements(BODY_PATH)
     shirts = load_shirt_data(SHIRT_PATH)
     results = score_shirts(body, shirts)
     assert isinstance(results, list)
-    assert all('FitScore' in r for r in results)
-    assert all('BulkFitScore' in r for r in results)
+    assert all("FitScore" in r for r in results)
+    assert all("BulkFitScore" in r for r in results)
     assert len(results) == 3  # Three shirts in the sample file
     # Sanity check values
     for res in results:
-        assert 0 <= res['FitScore'] <= 100 or res['FitScore'] == ""  # "" for missing data
-        assert 0 <= res['BulkFitScore'] <= 100 or res['BulkFitScore'] == ""
-        assert isinstance(res['ShirtName'], str)
+        assert 0 <= res["FitScore"] <= 100 or res["FitScore"] == ""  # "" for missing data
+        assert 0 <= res["BulkFitScore"] <= 100 or res["BulkFitScore"] == ""
+        assert isinstance(res["ShirtName"], str)
+
 
 def test_evaluate_fit_pipeline(tmp_path):
     # Use the sample files, but output to a temp dir so nothing is overwritten
     out_path = tmp_path / "fit_results.csv"
-    results = evaluate_fit(
-        body_path=BODY_PATH,
-        shirt_path=SHIRT_PATH,
-        out_path=str(out_path)
-    )
+    results = evaluate_fit(body_path=BODY_PATH, shirt_path=SHIRT_PATH, out_path=str(out_path))
     assert os.path.exists(out_path)
     df = pd.read_csv(out_path)
     assert not df.empty
