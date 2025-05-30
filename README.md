@@ -87,4 +87,3 @@ Midwest Princess,22.00,19.00,28.75
 
 ---
 
-Let me know if you want a zipped copy or any new features!
