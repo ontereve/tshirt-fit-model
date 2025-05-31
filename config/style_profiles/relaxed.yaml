@@ -1,0 +1,16 @@
+name: relaxed
+description: "Classic relaxed-fit t-shirt. Slightly looser in chest and shoulders, forgiving on length and hem."
+chest:
+  weight: 0.17
+  relaxed_max: 2.7
+  oversized_max: 5.0
+shoulder:
+  weight: 0.19
+length:
+  weight: 0.17
+hem:
+  weight: 0.14
+weight:
+  light_score: 65
+interaction_adjustments:
+  relaxed_heavy_bonus: 7

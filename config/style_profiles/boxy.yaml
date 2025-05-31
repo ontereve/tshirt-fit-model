@@ -1,0 +1,14 @@
+name: boxy
+description: "Wide, square, boxy fit. Extra room in hem, long and ideal length more tolerated."
+hem:
+  box_cut_max: 2.5
+  flared_min: 2.2
+  weight: 0.19
+chest:
+  relaxed_max: 3.2
+  oversized_max: 6.5
+length:
+  ideal_max: 1.8
+  long_max: 3.8
+weight:
+  mid_score: 90

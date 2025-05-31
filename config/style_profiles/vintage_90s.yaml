@@ -1,0 +1,18 @@
+name: vintage_90s
+description: "Vintage 90s style. Extra roomy, heavier weights favored, bigger boxy hems."
+chest:
+  weight: 0.20
+  relaxed_max: 3.2
+  oversized_max: 6.2
+  comically_oversized_max: 8.0
+shoulder:
+  weight: 0.20
+length:
+  weight: 0.18
+hem:
+  box_cut_max: 2.0
+  weight: 0.12
+weight:
+  heavy_score: 110
+interaction_adjustments:
+  oversized_heavy_bonus: 9

@@ -1,0 +1,15 @@
+name: cropped
+description: "Trendy cropped tee, hits higher at waist. Prioritizes short/ideal length, lighter weights."
+length:
+  cropped_min: -1.5
+  short_max: -0.3
+  ideal_max: 0.7
+  weight: 0.20
+chest:
+  weight: 0.15
+shoulder:
+  weight: 0.14
+hem:
+  weight: 0.14
+weight:
+  light_score: 90
