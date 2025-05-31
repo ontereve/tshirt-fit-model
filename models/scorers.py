@@ -1,8 +1,12 @@
 # scorers.py
 
 import math
+from .model_params import *
+#from .utils.config_loader import load_model_config
+
 import logging
-from .utils.config_loader import load_model_config
+
+logger = logging.getLogger(__name__)
 
 def score_by_ratio(ratio, bounds):
     """
