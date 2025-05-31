@@ -1,0 +1,102 @@
+# model_config.yaml
+# Centralized configuration for fit scoring model
+
+aspects:
+  chest:
+    scorer: score_chest
+    body_field: ChestWidth
+    shirt_field: ChestWidth
+    weight: 0.20
+    needs_chest: false
+  shoulder:
+    scorer: score_shoulder
+    body_field: ShoulderWidth
+    shirt_field: ShoulderWidth
+    weight: 0.20
+    needs_chest: false
+  length:
+    scorer: score_length
+    body_field: TorsoLength
+    shirt_field: BodyLength
+    weight: 0.15
+    needs_chest: true
+  hem:
+    scorer: score_hem
+    body_field: HemWidth
+    shirt_field: HemWidth
+    weight: 0.15
+    needs_chest: true
+  sleeve:
+    scorer: score_sleeve
+    body_field: SleeveLength
+    shirt_field: SleeveLength
+    weight: 0.15
+    needs_chest: true
+  weight:
+    scorer: score_weight
+    body_field: null
+    shirt_field: Weight
+    weight: 0.15
+    needs_chest: false
+
+scoring_params:
+  chest:
+    too_tight_penalty: 35.0
+    slim_penalty: 20.0
+    relaxed_max: 2.0
+    oversized_max: 4.0
+    comically_oversized_max: 6.0
+    very_oversized_penalty: 10.0
+
+  shoulder:
+    too_narrow_penalty: 45.0
+    drop_max: 2.0
+    very_oversized_penalty: 10.0
+
+  length:
+    cropped_min: -2.0
+    short_max: -0.5
+    ideal_max: 1.0
+    long_max: 3.0
+    very_long_penalty: 75
+
+  hem:
+    too_tight_penalty: 60.0
+    flared_min: 2.0
+    box_cut_max: 1.0
+    tapered_penalty: 70
+
+  sleeve:
+    cap_min: -2.0
+    short_max: 0.0
+    ideal_max: 2.0
+    elbow_max: 2.0
+    cap_score: 60
+    short_score: 80
+    ideal_score: 100
+    elbow_score: 85
+
+  weight:
+    light_max: 4.2
+    mid_max: 5.0
+    heavy_max: 6.5
+    very_heavy_min: 6.5
+    light_score: 55
+    mid_score: 85
+    heavy_score: 100
+    very_heavy_score: 90
+
+interaction_adjustments:
+  oversized_heavy_bonus: 7
+  oversized_light_penalty: 6
+  relaxed_heavy_bonus: 3
+  slim_light_penalty: 4
+
+projection_config:
+  increments:
+    ChestWidth: 1.0
+    ShoulderWidth: 0.5
+    SleeveLength: 0.5
+    TorsoLength: 0.0
+    HemWidth: 0.5
+  confidence_mod: 0.85
