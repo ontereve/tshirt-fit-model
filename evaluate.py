@@ -184,8 +184,44 @@ def main():
         args.body, args.shirts, args.out, style_profile=args.style_profile
     )
 
-    # Display results in console
-    print(tabulate(pd.DataFrame(results), headers="keys", tablefmt="fancy_grid", showindex=False))
+    # Build display DataFrame depending on style_profile
+    df_display = pd.DataFrame(results)
+    if args.style_profile:
+        # Show Core and Style columns
+        display_cols = [
+            ("ShirtName", "Shirt name"),
+            ("CoreFitScore", "Core Score"),
+            ("CoreConfidence", "Core Conf."),
+            ("StyleFitScore", "Style Score"),
+            ("StyleConfidence", "Style Conf."),
+        ]
+    else:
+        # Show Core and Bulk columns
+        display_cols = [
+            ("ShirtName", "Shirt name"),
+            ("CoreFitScore", "Score"),
+            ("CoreConfidence", "Conf."),
+            ("BulkFitScore", "Bulk Score"),
+            ("BulkConfidence", "Bulk Conf."),
+        ]
+
+    # Subset and rename columns for console display
+    try:
+        display_df = df_display[[c[0] for c in display_cols]].copy()
+        display_df.columns = [c[1] for c in display_cols]
+    except KeyError:
+        # If expected columns are missing, fallback to printing all
+        print(tabulate(df_display, headers="keys", tablefmt="fancy_grid", showindex=False))
+        return
+
+    # Format numeric columns to two decimals if present
+    for col in display_df.columns[1:]:
+        display_df[col] = display_df[col].apply(
+            lambda x: f"{float(x):.2f}" if x not in ["", None, "nan"] and str(x) != "" else ""
+        )
+
+    print("\nFitting Results:\n")
+    print(tabulate(display_df, headers="keys", tablefmt="fancy_grid", showindex=False))
 
 
 if __name__ == "__main__":
