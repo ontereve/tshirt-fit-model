@@ -12,6 +12,7 @@ from tabulate import tabulate
 from utils.data_loader import load_body_measurements, load_shirt_data
 from models.fit_model import score_fit, bulk_projection_profile
 from utils.config_loader import load_model_config
+from pathlib import Path
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,10 +25,12 @@ def score_shirts(body, shirts, style_profile=None):
     Scores each shirt for both core, bulk, and optional style profiles.
     Returns a list of dicts, one per shirt.
     """
+    # Determine project‐root so config_loader knows where to find “config/model_config.yaml” etc.
+    root_dir = Path(__file__).resolve().parent
     # Preload base config (for “core”) and style config if requested
-    core_config = load_model_config()
+    core_config = load_model_config(config_dir=root_dir)
     if style_profile:
-        style_config = load_model_config(style_profile=style_profile)
+        style_config = load_model_config(style_profile=style_profile, config_dir=root_dir)
     else:
         style_config = None
 
@@ -189,7 +192,7 @@ def main():
     if args.style_profile:
         # Show Core and Style columns
         display_cols = [
-            ("ShirtName", "Shirt name"),
+            ("ShirtName", "Sh irt name"),
             ("CoreFitScore", "Core Score"),
             ("CoreConfidence", "Core Conf."),
             ("StyleFitScore", "Style Score"),
