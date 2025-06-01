@@ -1,18 +1,33 @@
 name: slim
-description: "Modern slim fit. Trimmer in chest and shoulder, less tolerance for oversized or relaxed."
-chest:
-  weight: 0.23
-  relaxed_max: 1.0
-  slim_penalty: 35.0
-  oversized_max: 2.8
-shoulder:
-  weight: 0.21
-length:
-  weight: 0.13
-hem:
-  weight: 0.13
-weight:
-  mid_score: 75
-  light_score: 80
+description: "Slim fit (tighter through chest, reduced lengths)."
+
+aspects:
+  chest:
+    # Increase chest weight influence by 10% (so chest dimension matters more)
+    weight_multiplier: 1.10
+    # Reduce relaxed gap by 0.5" (require closer chest fit)
+    relaxed_max_offset: -0.5
+
+  shoulder:
+    # Reduce drop-shoulder allowance by 0.3" (require slimmer shoulders)
+    drop_max_offset: -0.3
+
+  length:
+    # Slightly shorter length (-0.7")
+    ideal_max_offset: -0.7
+
+  hem:
+    # Reduce hem flare by 0.3"
+    flared_min_offset: -0.3
+
+  sleeve:
+    # Slightly shorter sleeves (-0.5")
+    ideal_max_offset: -0.5
+
+  weight:
+    # Keep same weight behavior
+    weight_multiplier: 1.0
+
 interaction_adjustments:
-  slim_light_penalty: 7
+  # No changes beyond core
+  slim_light_penalty_offset: 0

@@ -1,14 +1,32 @@
 name: boxy
-description: "Wide, square, boxy fit. Extra room in hem, long and ideal length more tolerated."
-hem:
-  box_cut_max: 2.5
-  flared_min: 2.2
-  weight: 0.19
-chest:
-  relaxed_max: 3.2
-  oversized_max: 6.5
-length:
-  ideal_max: 1.8
-  long_max: 3.8
-weight:
-  mid_score: 90
+description: "Boxy fit—extra room in chest, hem, shoulder; minimal taper."
+
+aspects:
+  chest:
+    # Weight same, but allow 2" extra relaxed gap
+    relaxed_max_offset: 2.0
+    # Mark large chest as less penalized (oversized_max +1)
+    oversized_max_offset: 1.0
+
+  shoulder:
+    # Allow 2" more drop-shoulder
+    drop_max_offset: 2.0
+    # Reduce "very oversized" penalty margin slightly
+    very_oversized_penalty_offset: -2.0
+
+  length:
+    # Inherit core
+
+  hem:
+    # Allow +1.5" flare
+    flared_min_offset: 1.5
+
+  sleeve:
+    # Inherit core
+
+  weight:
+    # No change to weight behavior
+    weight_multiplier: 1.0
+
+interaction_adjustments:
+  # No change

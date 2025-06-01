@@ -61,9 +61,11 @@ def score_shirts(body, shirts, style_profile=None):
         }
 
         if style_config:
-            # Inject style overlay config into fit_model globals
+            # --- BEGIN style-overlay injection ---
             import models.fit_model as fit_model_mod
+            import models.scorers as scorers_mod
 
+            # 1) Inject style_config into fit_model.py globals
             fit_model_mod.MODEL_CONFIG = style_config
             fit_model_mod.ASPECTS = list(style_config["aspects"].keys())
             fit_model_mod.SCORING_PARAMS = style_config["scoring_params"]
@@ -88,6 +90,12 @@ def score_shirts(body, shirts, style_profile=None):
                 if cfg.get("needs_chest", False)
             }
 
+            # 2) Also inject style_config into scorers.py globals
+            scorers_mod.config = style_config
+            scorers_mod.scoring_params = style_config["scoring_params"]
+            scorers_mod.adjustments = style_config["interaction_adjustments"]
+
+            # 3) Now call score_fit(...) (it will use the *new* style_config everywhere)
             style_result = score_fit(body, shirt)
             row_data.update({
                 "StyleFitScore": style_result.get("FitScore"),
@@ -97,7 +105,7 @@ def score_shirts(body, shirts, style_profile=None):
                 "StyleProfile": style_profile,
             })
 
-            # Reset core config back
+            # 4) Reset fit_model.py globals back to core_config
             fit_model_mod.MODEL_CONFIG = core_config
             fit_model_mod.ASPECTS = list(core_config["aspects"].keys())
             fit_model_mod.SCORING_PARAMS = core_config["scoring_params"]
@@ -121,6 +129,12 @@ def score_shirts(body, shirts, style_profile=None):
                 for aspect, cfg in core_config["aspects"].items()
                 if cfg.get("needs_chest", False)
             }
+
+            # 5) Reset scorers.py globals back to core_config as well
+            scorers_mod.config = core_config
+            scorers_mod.scoring_params = core_config["scoring_params"]
+            scorers_mod.adjustments = core_config["interaction_adjustments"]
+            # --- END style-overlay injection ---
 
         results.append(row_data)
 

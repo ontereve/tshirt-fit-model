@@ -1,0 +1,14 @@
+# config/projections/bulk.yaml
+
+name: bulk_projection
+description: |
+  Projection config for simulating “bulked up” body dimensions, used for confidence and growth fit scenarios.
+
+increments:
+  ChestWidth: 1.0         # Inches to add to body measurement
+  ShoulderWidth: 0.5
+  SleeveLength: 0.5
+  TorsoLength: 0.0        # No torso length growth for this projection
+  HemWidth: 0.5
+
+confidence_mod: 0.85      # Reduce confidence in projection results by this factor

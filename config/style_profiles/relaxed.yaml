@@ -1,16 +1,31 @@
 name: relaxed
-description: "Classic relaxed-fit t-shirt. Slightly looser in chest and shoulders, forgiving on length and hem."
-chest:
-  weight: 0.17
-  relaxed_max: 2.7
-  oversized_max: 5.0
-shoulder:
-  weight: 0.19
-length:
-  weight: 0.17
-hem:
-  weight: 0.14
-weight:
-  light_score: 65
+description: "Relaxed fit (slightly looser through chest/hem, minor shoulder drop)."
+
+aspects:
+  chest:
+    # Decrease chest weight influence by 15%
+    weight_multiplier: 0.85
+    # Allow 0.5" more relaxed gap
+    relaxed_max_offset: 0.5
+
+  shoulder:
+    # Slightly more drop-shoulder allowance
+    drop_max_offset: 0.3
+
+  length:
+    # No change (inherits core)
+
+  hem:
+    # Allow a little extra flare
+    flared_min_offset: 0.2
+
+  sleeve:
+    # No change
+
+  weight:
+    # Keep same weight behavior
+    weight_multiplier: 1.0
+
 interaction_adjustments:
-  relaxed_heavy_bonus: 7
+  # Increase the "relaxed + heavy" bonus from core 3 → 5 (+2 offset)
+  relaxed_heavy_bonus_offset: 2

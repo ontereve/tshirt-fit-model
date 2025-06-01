@@ -48,9 +48,12 @@ def test_score_shirts_with_style_profile():
     assert all(r.get("StyleProfile") == "relaxed" for r in results)
     # Ensure core FitScore still present
     assert all("FitScore" in r for r in results)
-    # StyleFitScore should be numeric. We don't assume difference for every shirt.
+        # StyleFitScore should be numeric. We don’t assume difference.
     for r in results:
         assert isinstance(r.get("StyleFitScore"), (int, float))
+    # Ensure not all style scores equal core scores
+    all_equal = all(r.get("StyleFitScore") == r.get("FitScore") for r in results)
+    assert not all_equal, "All StyleFitScore values are identical to FitScore; overlay not applied."
 
 
 @pytest.mark.parametrize("profile", ["relaxed", "slim"])

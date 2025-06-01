@@ -1,12 +1,5 @@
-# scorers.py
-
 import math
 import logging
-from utils.config_loader import load_model_config
-
-config = load_model_config()
-scoring_params = config["scoring_params"]
-adjustments = config["interaction_adjustments"]
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +13,10 @@ def score_by_ratio(ratio, bounds):
 
 
 def score_chest(body_chest, shirt_chest):
-    chest = scoring_params["chest"]
+    # Dynamically import scoring params to avoid circular import at top-level
+    from models.fit_model import SCORING_PARAMS as _scoring_params
+    chest = _scoring_params["chest"]
+
     if body_chest is not None and shirt_chest is not None:
         chest_diff = shirt_chest - body_chest
         if chest_diff < -0.5:
@@ -52,12 +48,15 @@ def score_chest(body_chest, shirt_chest):
             "Comically Oversized",
             f'Chest: {chest_diff:+.1f}" vs body (comically oversized).',
         )
+
     logger.warning("Missing chest data for scoring.")
     return 50, None, "[No chest data]"
 
 
 def score_shoulder(body_shoulder, shirt_shoulder):
-    shoulder = scoring_params["shoulder"]
+    from models.fit_model import SCORING_PARAMS as _scoring_params
+    shoulder = _scoring_params["shoulder"]
+
     if body_shoulder is not None and shirt_shoulder is not None:
         diff = shirt_shoulder - body_shoulder
         if diff < -0.5:
@@ -75,12 +74,15 @@ def score_shoulder(body_shoulder, shirt_shoulder):
             "Very Oversized Shoulders",
             f'Shoulder: {diff:+.1f}" vs body (very oversized).',
         )
+
     logger.warning("Missing shoulder data for scoring.")
     return 50, None, "[No shoulder data]"
 
 
 def score_length(body_length, shirt_length, shirt_chest):
-    length = scoring_params["length"]
+    from models.fit_model import SCORING_PARAMS as _scoring_params
+    length = _scoring_params["length"]
+
     if body_length is not None and shirt_length is not None:
         diff = shirt_length - body_length
         if diff < length["cropped_min"]:
@@ -96,16 +98,20 @@ def score_length(body_length, shirt_length, shirt_chest):
             "Very Long",
             f'Length: {diff:+.1f}" vs body (very long).',
         )
+
     elif shirt_length is not None and shirt_chest is not None:
         ratio = shirt_length / shirt_chest
-        bounds = scoring_params["length"]["fallback_ratio_bounds"]
+        bounds = _scoring_params["length"]["fallback_ratio_bounds"]
         return score_by_ratio(ratio, bounds)
+
     logger.warning("Missing length data for scoring.")
     return 50, None, "[No length data]"
 
 
 def score_hem(body_hem, shirt_hem, shirt_chest):
-    hem = scoring_params["hem"]
+    from models.fit_model import SCORING_PARAMS as _scoring_params
+    hem = _scoring_params["hem"]
+
     if shirt_hem is not None and ((body_hem is not None) or (shirt_chest is not None)):
         if body_hem is not None:
             diff = shirt_hem - body_hem
@@ -125,12 +131,15 @@ def score_hem(body_hem, shirt_hem, shirt_chest):
             if diff < hem["box_cut_max"]:
                 return 100, None, f'Hem: {diff:+.1f}" vs chest.'
             return 90, "Boxy Cut", f'Hem: {diff:+.1f}" vs chest.'
+
     logger.warning("Missing hem data for scoring.")
     return 50, None, "[No hem data]"
 
 
 def score_sleeve(body_sleeve, shirt_sleeve, shirt_chest):
-    sleeve = scoring_params["sleeve"]
+    from models.fit_model import SCORING_PARAMS as _scoring_params
+    sleeve = _scoring_params["sleeve"]
+
     if shirt_sleeve is not None:
         if body_sleeve is not None:
             diff = shirt_sleeve - body_sleeve
@@ -160,12 +169,15 @@ def score_sleeve(body_sleeve, shirt_sleeve, shirt_chest):
                     f"Sleeve: Sleeve-to-chest ratio {ratio:.2f}.",
                 )
             return sleeve["ideal_score"], None, f"Sleeve: Sleeve-to-chest ratio {ratio:.2f}."
+
     logger.warning("Missing sleeve data for scoring.")
     return 50, None, "[No sleeve data]"
 
 
 def score_weight(shirt_weight, scores, aspects):
-    weight = scoring_params["weight"]
+    from models.fit_model import SCORING_PARAMS as _scoring_params
+    weight = _scoring_params["weight"]
+
     if shirt_weight is not None and isinstance(shirt_weight, (int, float)):
         wt = shirt_weight
         only_weight = all(scores.get(k, 50) == 50 for k in aspects if k != "weight")
@@ -183,15 +195,14 @@ def score_weight(shirt_weight, scores, aspects):
             tag = "Very Heavyweight"
         rationale = f"Weight: {wt:.1f} oz (ideal is 5–6 oz for vintage)."
         return score, tag, rationale
+
     logger.warning("Missing shirt weight data for scoring.")
     return 50, None, "[No shirt weight data]"
 
 
-# --- Adjustments ---
 def adjust_for_oversize_weight(tags, shirt_weight, fit_score):
-    """
-    Adjusts fit_score for oversized/weight interplay.
-    """
+    from models.fit_model import INTERACTION_ADJUSTMENTS as _adjustments
+
     if "Comically Oversized" in tags and shirt_weight and shirt_weight < 5.0:
         fit_score = max(0, fit_score - 10)
         logger.info(
@@ -199,16 +210,19 @@ def adjust_for_oversize_weight(tags, shirt_weight, fit_score):
         )
     elif ("Oversized" in tags or "Very Oversized" in tags) and shirt_weight:
         if shirt_weight >= 6.0:
-            fit_score = min(100, fit_score + adjustments["oversized_heavy_bonus"])
+            fit_score = min(100, fit_score + _adjustments["oversized_heavy_bonus"])
         elif shirt_weight < 4.5:
-            fit_score = max(0, fit_score - adjustments["oversized_light_penalty"] * 2)
+            fit_score = max(0, fit_score - _adjustments["oversized_light_penalty"] * 2)
+
     if "Relaxed Fit" in tags and shirt_weight and shirt_weight >= 6.5:
-        fit_score = min(100, fit_score + adjustments["relaxed_heavy_bonus"])
+        fit_score = min(100, fit_score + _adjustments["relaxed_heavy_bonus"])
+
     if "Slim Fit" in tags and shirt_weight and shirt_weight < 4.5:
-        fit_score = max(0, fit_score - adjustments["slim_light_penalty"])
+        fit_score = max(0, fit_score - _adjustments["slim_light_penalty"])
+
     if "Comically Oversized" in tags and fit_score > 70:
         fit_score = 70
     elif "Very Oversized" in tags and fit_score > 85:
         fit_score = 85
-    return fit_score
 
+    return fit_score

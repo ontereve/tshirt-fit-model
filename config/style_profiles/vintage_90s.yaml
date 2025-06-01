@@ -1,18 +1,31 @@
 name: vintage_90s
-description: "Vintage 90s style. Extra roomy, heavier weights favored, bigger boxy hems."
-chest:
-  weight: 0.20
-  relaxed_max: 3.2
-  oversized_max: 6.2
-  comically_oversized_max: 8.0
-shoulder:
-  weight: 0.20
-length:
-  weight: 0.18
-hem:
-  box_cut_max: 2.0
-  weight: 0.12
-weight:
-  heavy_score: 110
+description: "A 90s-inspired fit—slightly boxy and midweight focus."
+
+aspects:
+  chest:
+    # Mildly reduce chest weight influence (0.95×)
+    weight_multiplier: 0.95
+    # Increase relaxed gap by 1.0" for boxier chest
+    relaxed_max_offset: 1.0
+
+  shoulder:
+    # More drop-shoulder for boxy silhouette
+    drop_max_offset: 1.0
+
+  length:
+    # Inherit core
+
+  hem:
+    # Boxier hem gap: +0.8"
+    flared_min_offset: 0.8
+
+  sleeve:
+    # Inherit core
+
+  weight:
+    # Favor midweight fabrics by shifting weight thresholds up slightly
+    mid_max_offset: 0.5
+    heavy_max_offset: 0.5
+
 interaction_adjustments:
-  oversized_heavy_bonus: 9
+  # No change to interaction adjustments

@@ -1,15 +1,30 @@
 name: cropped
-description: "Trendy cropped tee, hits higher at waist. Prioritizes short/ideal length, lighter weights."
-length:
-  cropped_min: -1.5
-  short_max: -0.3
-  ideal_max: 0.7
-  weight: 0.20
-chest:
-  weight: 0.15
-shoulder:
-  weight: 0.14
-hem:
-  weight: 0.14
-weight:
-  light_score: 90
+description: "Cropped fit—shorter length with close chest."
+
+aspects:
+  chest:
+    # Inherit core
+    weight_multiplier: 1.0
+
+  shoulder:
+    # Inherit core
+
+  length:
+    # Subtract 2.0" from each length threshold
+    cropped_min_offset: 0.0       # keep the same minimum for \"cropped\"
+    short_max_offset: -1.0        # shorter maximum for \"short\"
+    ideal_max_offset: -2.0        # ideal fit happens 2\" shorter than core
+
+  hem:
+    # Inherit core
+    weight_multiplier: 1.0
+
+  sleeve:
+    # Inherit core
+
+  weight:
+    # Inherit core
+    weight_multiplier: 1.0
+
+interaction_adjustments:
+  # No change
